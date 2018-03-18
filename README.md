@@ -65,6 +65,8 @@ A basic webui is provided in order to quickly get and compare sentiment analysis
 
 Once the server is started, browse to  [http://localhost:5000](http://localhost:5000)
 
+![Screenshot](screenshot-1.png)
+
 ### Curl
 
 ```
@@ -81,14 +83,14 @@ Once the server is started, browse to  [http://localhost:5000](http://localhost:
 ### Java
 
 ```
-		CloseableHttpClient httpClient = HttpClients.createDefault();
-    HttpPost post = new HttpPost(endpoint);
-    post.setHeader("Content-Type", "application/json; charset=utf-8");
-    post.setEntity(new StringEntity("I'm happy");
-    try (CloseableHttpResponse res = httpClient.execute(post)) {
-      String sentiment = IOUtils.toString(res.getEntity().getContent(), StandardCharsets.UTF_8);
-      System.out.println(sentiment);
-    }
+  CloseableHttpClient httpClient = HttpClients.createDefault();
+  HttpPost post = new HttpPost(endpoint);
+  post.setHeader("Content-Type", "application/json; charset=utf-8");
+  post.setEntity(new StringEntity("I'm happy");
+  try (CloseableHttpResponse res = httpClient.execute(post)) {
+    String sentiment = IOUtils.toString(res.getEntity().getContent(), StandardCharsets.UTF_8);
+    System.out.println(sentiment);
+  }
 ```
 
 ### JQuery
