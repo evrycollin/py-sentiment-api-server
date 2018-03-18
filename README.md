@@ -18,7 +18,7 @@ For each component, and server endpoint is implemented :
 
   Apache License Version 2.0
 
-## Install
+## Install and Run
 
 The server is implemented on Python using Flask, NLTK and TextBlob components.
 
@@ -38,15 +38,30 @@ The server is implemented on Python using Flask, NLTK and TextBlob components.
 
 ### On Windows
 
+- install
+
 ```
   install.cmd
+```
+- run the server
+
+```
+  start python sentiment-api-server.py
 ```
 
 ### On Linux / Mac-OS
 
+- install
+
 ```
   install.sh
 ```
+- run the server
+
+```
+  python sentiment-api-server.py
+```
+
 
 ### Manual setup
 
