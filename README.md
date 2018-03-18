@@ -9,7 +9,7 @@ This component provide an web API provided sentiment analysis based on several w
 - TextBlob with Naive Bayses analyser
 - NLTK Vader component
 
-For each component, and server endpoint is implemented :
+For each component, and server endpoint is implemented where you simply have to post the text to be analysed :
 - /api/textblob
 - /api/textblob/naive-bayes
 - /api/vader
