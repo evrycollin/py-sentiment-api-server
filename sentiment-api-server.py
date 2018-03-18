@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from textblob import TextBlob
 from textblob.sentiments import NaiveBayesAnalyzer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
