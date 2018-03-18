@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TextBlob API Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span6">
+          <form>
+            <h2>Input text</h2>
+            <textarea id="corpus" style="width: 100%;" rows="19"></textarea>
+          </form>
+        </div>
+        <div class="span6">
+          <h2>Sentiment Analysis</h2>
+          <span id="textblob" class="label">TextBlob</span> <code>/api/textblob</code>
+          <textarea readonly id="textblob_result" style="width: 100%;" rows="2"></textarea>
+          <span id="textblob-nb" class="label">TextBlob (NaiveBayesAnalyzer)</span> <code>/api/textblob/naive-bayes</code>
+          <textarea readonly id="textblob-nb_result" style="width: 100%;" rows="2"></textarea>
+          <span id="vader" class="label">Vader</span> <code>/api/vader</code>
+          <textarea readonly id="vader_result" style="width: 100%;" rows="2"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+    var Colors = {
+      pos: 'green',
+      neu: 'grey',
+      neg: 'red'
+    }
+    jQuery(function($) {
+      var wto
+      $('#corpus').bind('change keyup paste input', function() {
+        clearTimeout(wto)
+        wto = setTimeout(function() {
+        
+          // TextBlob
+          $('#textblob_result').val('... loading ...')
+          $.ajax({
+            url: '/api/textblob',
+            type: 'POST',
+            data: $('#corpus').val(),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function(data, status) {
+              $('#textblob').css('background-color', Colors[data.classification])
+              $('#textblob_result').val(JSON.stringify(data))
+            }
+          })
+          
+          // TextBlob - NaiveBayses Anaylser
+          $('#textblob-nb_result').val('... loading ...')
+          $.ajax({
+            url: '/api/textblob/naive-bayes',
+            type: 'POST',
+            data: $('#corpus').val(),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function(data, status) {
+              $('#textblob-nb').css('background-color', Colors[data.classification])
+              $('#textblob-nb_result').val(JSON.stringify(data))
+            }
+          })
+          
+          // Vader
+          $('#vader_result').val('... loading ...')
+          $.ajax({
+            url: '/api/vader',
+            type: 'POST',
+            contentType: 'application/json',
+            data: $('#corpus').val(),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function(data, status) {
+              $('#vader').css('background-color', Colors[data.classification])
+              $('#vader_result').val(JSON.stringify(data))
+            }
+          })
+          
+        }, 200)
+      })
+    })
+    </script>
+
+  </body>
+</html>
