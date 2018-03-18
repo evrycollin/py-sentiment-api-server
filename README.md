@@ -71,13 +71,13 @@ Once the server is started, browse to  [http://localhost:5000](http://localhost:
 
 ```
   # Textblob :
-  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://whale.west.com:5000/api/textblob
+  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://localhost:5000/api/textblob
   
   # Textblob (Naive Bayses) :
-  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://whale.west.com:5000/api/textblob/naive-bayes
+  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://localhost:5000/api/textblob/naive-bayes
   
   # Vader :
-  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://whale.west.com:5000/api/vader
+  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://localhost:5000/api/vader
 ```
 
 ### Java
