@@ -24,6 +24,14 @@ The server is implemented on Python using Flask, NLTK and TextBlob components.
 
 ### With docker
 
+#### use provided image
+
+```
+docker run -p 5000:5000 -d evrycollin/py-sentiment-api-server:latest
+```
+
+#### build your own image
+
 - build the container
 
 ```
@@ -35,6 +43,7 @@ The server is implemented on Python using Flask, NLTK and TextBlob components.
 ```
   docker run -p 5000:8000 -d py-sentiment-api-server
 ```
+
 
 ### On Windows
 
