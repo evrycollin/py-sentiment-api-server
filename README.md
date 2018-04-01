@@ -9,7 +9,7 @@ This component provide an web API provided sentiment analysis based on several w
 - TextBlob with Naive Bayses analyser
 - NLTK Vader component
 
-For each component, and server endpoint is implemented :
+For each component, and server endpoint is implemented where you simply have to post the text to be analysed :
 - /api/textblob
 - /api/textblob/naive-bayes
 - /api/vader
@@ -18,13 +18,28 @@ For each component, and server endpoint is implemented :
 
   Apache License Version 2.0
 
-## Install
+## Install and Run
 
 The server is implemented on Python using Flask, NLTK and TextBlob components.
 
 ### With docker
 
-- build the container
+#### use provided docker image
+```
+docker run -p 5000:5000 -d evrycollin/py-sentiment-api-server:latest
+```
+#### docker-compose.yml
+```
+sentiment-api:
+  image: evrycollin/py-sentiment-api-server:latest
+  container_name: sentiment-api
+  ports:
+  - "5000:5000"
+```
+
+#### use your own docker image
+
+- build
 
 ```
   docker build -t py-sentiment-api-server .
@@ -36,17 +51,33 @@ The server is implemented on Python using Flask, NLTK and TextBlob components.
   docker run -p 5000:8000 -d py-sentiment-api-server
 ```
 
+
 ### On Windows
+
+- install
 
 ```
   install.cmd
 ```
+- run the server
+
+```
+  start python sentiment-api-server.py
+```
 
 ### On Linux / Mac-OS
+
+- install
 
 ```
   install.sh
 ```
+- run the server
+
+```
+  python sentiment-api-server.py
+```
+
 
 ### Manual setup
 
@@ -71,13 +102,13 @@ Once the server is started, browse to  [http://localhost:5000](http://localhost:
 
 ```
   # Textblob :
-  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://whale.west.com:5000/api/textblob
+  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://localhost:5000/api/textblob
   
   # Textblob (Naive Bayses) :
-  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://whale.west.com:5000/api/textblob/naive-bayes
+  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://localhost:5000/api/textblob/naive-bayes
   
   # Vader :
-  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://whale.west.com:5000/api/vader
+  curl -XPOST -H "Content-Type: application/json" -d "I'm happy" http://localhost:5000/api/vader
 ```
 
 ### Java
