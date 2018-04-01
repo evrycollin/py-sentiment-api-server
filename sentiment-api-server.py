@@ -1,11 +1,19 @@
+import string
 from textblob import TextBlob
 from textblob.sentiments import NaiveBayesAnalyzer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from flask import Flask, jsonify, abort, request, make_response, url_for, redirect
 
 DEBUG = False
+exclude_char = set(string.punctuation)
 
 app = Flask(__name__, static_url_path = "")
+
+# to lower case + remove punctuation + remove long spaces + trim
+def clean_data(str):
+    txt = str.lower()
+    txt = ''.join(ch for ch in txt if ch not in exclude_char)
+    return txt.replace('  ',' ').strip()
 
 @app.errorhandler(400)
 def not_found(error):
@@ -21,7 +29,7 @@ def index():
 
 @app.route('/api/textblob', methods = ['POST'])
 def get_sentiment_textblob():
-    data = request.data.decode("utf-8")
+    data = clean_data(request.data.decode("utf-8"))
     polarity, subjectivity = TextBlob(data).sentiment
     classification = 'neu'
     if subjectivity > 0:
@@ -34,7 +42,7 @@ def get_sentiment_textblob():
 naive_bayes_analyzer = NaiveBayesAnalyzer()
 @app.route('/api/textblob/naive-bayes', methods = ['POST'])
 def get_sentiment_textblob_nb():
-    data = request.data.decode("utf-8")
+    data = clean_data(request.data.decode("utf-8"))
     options = { 'analyzer': naive_bayes_analyzer }
     classification, pos, neg = TextBlob(data, **options).sentiment
     return jsonify( { 'classification': classification, 'pos': pos, 'neg': neg } ), 200
@@ -42,7 +50,7 @@ def get_sentiment_textblob_nb():
 vader = SentimentIntensityAnalyzer()
 @app.route('/api/vader', methods = ['POST'])
 def get_sentiment_vader():
-    data = request.data.decode("utf-8")
+    data = clean_data(request.data.decode("utf-8"))
     sentiments = vader.polarity_scores(data)
     sentiments['classification'] = 'neu'    
     if sentiments['compound'] > 0.1:
