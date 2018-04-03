@@ -4,6 +4,7 @@ from textblob import TextBlob
 from textblob.sentiments import NaiveBayesAnalyzer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from flask import Flask, jsonify, abort, request, make_response, url_for, redirect
+import demo
 
 DEBUG = False
 exclude_char = set(string.punctuation)
@@ -59,6 +60,10 @@ def get_sentiment_vader():
     if sentiments['compound'] < -0.1:
         sentiments['classification'] = 'neg'
     return jsonify( sentiments ), 200        
+
+@app.route('/api/demo', methods = ['POST'])
+def get_sentiment_demo_ai():
+    return demo.predict_one(request.data.decode("utf-8")), 200 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=DEBUG)

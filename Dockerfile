@@ -1,7 +1,7 @@
-from python:3
+from tensorflow/tensorflow:1.7.0-py3
 
 # Install python dependencies
-RUN pip install Flask textblob
+RUN pip install Flask textblob seaborn matplotlib keras
 
 # download Textblob dataset
 RUN python -m textblob.download_corpora

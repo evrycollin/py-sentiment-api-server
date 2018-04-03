@@ -25,6 +25,9 @@
           <textarea readonly id="textblob-nb_result" style="width: 100%;" rows="2"></textarea>
           <span id="vader" class="label">Vader</span> <code>/api/vader</code>
           <textarea readonly id="vader_result" style="width: 100%;" rows="2"></textarea>
+          <h6>Demo AI</h6>
+          <span id="demo" class="label">Demo AI</span> <code>/api/demo-ai</code>
+          <textarea readonly id="demo_result" style="width: 100%;" rows="2"></textarea>
         </div>
       </div>
 
@@ -85,6 +88,21 @@
             success: function(data, status) {
               $('#vader').css('background-color', Colors[data.classification])
               $('#vader_result').val(JSON.stringify(data))
+            }
+          })
+
+          // Demo AI
+          $('#demo_result').val('... loading ...')
+          $.ajax({
+            url: '/api/demo',
+            type: 'POST',
+            contentType: 'application/json',
+            data: $('#corpus').val(),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function(data, status) {
+              $('#demo').css('background-color', Colors[data.classification])
+              $('#demo_result').val(JSON.stringify(data))
             }
           })
           
