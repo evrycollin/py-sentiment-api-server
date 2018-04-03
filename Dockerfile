@@ -16,6 +16,9 @@ WORKDIR /srv
 
 ADD sentiment-api-server.py /srv
 ADD static /srv/static
+ADD demo.py /srv
+ADD model.h5 /srv
+ADD vocab.json /srv
 
 # Add Tini
 ENV TINI_VERSION v0.17.0

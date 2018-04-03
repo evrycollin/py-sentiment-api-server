@@ -14,8 +14,17 @@
         <div class="span6">
           <form>
             <h2>Input text</h2>
-            <textarea id="corpus" style="width: 100%;" rows="19"></textarea>
+            <textarea id="corpus" style="width: 100%;" rows="10"></textarea>
           </form>
+          <h4>Test data</h4>
+          <h5>Categories</h5>
+          <select name="category" onchange="selectCategory(this.value)">
+            <option value="">... select a category ...</option>
+            <option value="books">books</option>
+            <option value="dvd">dvd</option>
+            <option value="electr">electr</option>
+            <option value="kitchen">kitchen</option>
+          </select>
         </div>
         <div class="span6">
           <h2>Sentiment Analysis</h2>
@@ -25,28 +34,46 @@
           <textarea readonly id="textblob-nb_result" style="width: 100%;" rows="2"></textarea>
           <span id="vader" class="label">Vader</span> <code>/api/vader</code>
           <textarea readonly id="vader_result" style="width: 100%;" rows="2"></textarea>
-          <h6>Demo AI</h6>
           <span id="demo" class="label">Demo AI</span> <code>/api/demo-ai</code>
           <textarea readonly id="demo_result" style="width: 100%;" rows="2"></textarea>
         </div>
       </div>
-
+      <div class="row">
+        <h6><span class="label label-success">Positive</span></h6>
+        <select id="positive" size="10" style="width: 100%" onchange="$('#corpus').val($('#positive option:selected').text()); computeSentiments()">
+        </select>
+        <h6><span class="label label-warning">Negative</span></h6>
+        <select id="negative" size="10" style="width: 100%" onchange="$('#corpus').val($('#negative option:selected').text()); computeSentiments()">
+        </select>
+      </div>
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
     
     <script type="text/javascript">
+    
+    function selectCategory(category) {
+      var posSelect = $('#positive')
+      var negSelect = $('#negative')
+      // remove previous proposals
+      posSelect.find('option').remove().end()
+      negSelect.find('option').remove().end()
+      // feed proposals
+      for( idx in positive_data[category]) {
+        posSelect.append('<option>'+positive_data[category][idx]+'</option>')
+      }
+      for( idx in negative_data[category]) {
+        negSelect.append('<option>'+negative_data[category][idx]+'</option>')
+      }
+    }
     var Colors = {
       pos: 'green',
       neu: 'grey',
       neg: 'red'
     }
-    jQuery(function($) {
-      var wto
-      $('#corpus').bind('change keyup paste input', function() {
-        clearTimeout(wto)
-        wto = setTimeout(function() {
+    
+    var computeSentiments = function() {
         
           // TextBlob
           $('#textblob_result').val('... loading ...')
@@ -106,7 +133,34 @@
             }
           })
           
-        }, 200)
+        }
+    
+    
+    jQuery(function($) {
+    
+      // loading sample data
+      $.ajax({
+        url: '/data/negative.review.json',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data, status) {
+          window.negative_data = data
+        }
+      })     
+    
+      $.ajax({
+        url: '/data/positive.review.json',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data, status) {
+          window.positive_data = data
+        }
+      }) 
+      
+      var wto
+      $('#corpus').bind('change keyup paste input', function() {
+        clearTimeout(wto)
+        wto = setTimeout(computeSentiments, 200)
       })
     })
     </script>
